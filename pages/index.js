@@ -1,41 +1,38 @@
 import Head from 'next/head';
 
-export default function Home() {
+export default function Home({ weather }) {
+
   return (
-    <div className="container mx-auto">
+    <div className="py-7">
       <Head>
         <title>WeatherApp</title>
         <link rel="icon" href="/favicon.ico" />
+        <link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet"></link>
       </Head>
 
-      <main className="flex p-5">
-        <h1 className="flex p-1">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className="flex-1">
-          Get started by editing{' '}
-          <code className="flex-1">pages/index.js</code>
+      <div>
+        <p className="font-serif text-lg  font-maru text-green-300">this is a joke!</p>
+        <p className="container mx-auto shadow-lg  bg-red-300 font-maru text-green-600 text-lg">
+          伊豆諸島では強風や高波に
+          {weather.description.text}
+          <div className='flex justify-items-center font-maru text-gray-700 text-center'>{weather.location.city}</div>
         </p>
-
-        <div className="flex-1">
-          <a href="https://nextjs.org/docs" className="flex-1">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-        </div>
-      </main>
-
-      <footer className="flex-1">
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/" alt="Logo" className="flex-auto" />
-        </a>
-      </footer>
-    </div>
+      </div>
+    </div >
   );
+}
+
+
+export async function getStaticProps() {
+  try {
+    const res = await fetch('https://weather.tsukumijima.net/api/forecast?city=130011');
+    const weather = await res.json();
+    return {
+      props: {
+        weather,
+      },
+    };
+  } catch (err) {
+    console.error(err);
+  }
 }
